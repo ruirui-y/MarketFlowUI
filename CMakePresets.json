@@ -1,0 +1,83 @@
+{
+    "version": 3,
+    "cmakeMinimumRequired": {
+        "major": 3,
+        "minor": 22,
+        "patch": 0
+    },
+    "configurePresets": [
+        {
+            "name": "windows-base",
+            "hidden": true,
+            "generator": "Ninja",
+            "binaryDir": "${sourceDir}/build/${presetName}",
+            "cacheVariables": {
+                "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
+                "CMAKE_PREFIX_PATH": "C:/Users/Mars/QT5.15.2/5.15.2/msvc2019_64;D:/YJJ/vcpkg/installed/x64-windows"
+            }
+        },
+        {
+            "name": "windows-debug",
+            "displayName": "MarketFlowUI Windows Debug",
+            "description": "Windows + MSVC + Ninja + C++20 Debug（Qt 5.15.2 + vcpkg protobuf）",
+            "inherits": "windows-base",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Debug"
+            }
+        },
+        {
+            "name": "windows-release",
+            "displayName": "MarketFlowUI Windows Release",
+            "description": "Windows + MSVC + Ninja + C++20 Release",
+            "inherits": "windows-base",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Release"
+            }
+        },
+        {
+            "name": "linux-base",
+            "hidden": true,
+            "generator": "Ninja",
+            "binaryDir": "${sourceDir}/build/${presetName}",
+            "cacheVariables": {
+                "CMAKE_EXPORT_COMPILE_COMMANDS": "ON"
+            }
+        },
+        {
+            "name": "linux-debug",
+            "displayName": "MarketFlowUI Linux Debug",
+            "description": "Linux + Ninja + C++20 Debug（需要系统装 Qt 5.15 和 protobuf）",
+            "inherits": "linux-base",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Debug"
+            }
+        },
+        {
+            "name": "linux-release",
+            "displayName": "MarketFlowUI Linux Release",
+            "description": "Linux + Ninja + C++20 Release",
+            "inherits": "linux-base",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Release"
+            }
+        }
+    ],
+    "buildPresets": [
+        {
+            "name": "build-windows-debug",
+            "configurePreset": "windows-debug"
+        },
+        {
+            "name": "build-windows-release",
+            "configurePreset": "windows-release"
+        },
+        {
+            "name": "build-linux-debug",
+            "configurePreset": "linux-debug"
+        },
+        {
+            "name": "build-linux-release",
+            "configurePreset": "linux-release"
+        }
+    ]
+}

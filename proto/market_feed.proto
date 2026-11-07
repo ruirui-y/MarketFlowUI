@@ -1,0 +1,39 @@
+syntax = "proto3";
+
+package marketflow.feed;
+
+// 线上格式：4 字节大端长度 + 后面这段 protobuf 的字节数。
+// 长度字段本身不算在这 4 字节里。
+
+// 客户端发给服务端：要订阅哪些标的。
+message SubscribeRequest
+{
+    repeated uint32 symbol_ids = 1;                                // 空表示订阅全部
+    uint64 from_ts_ns = 2;                                         // 从这个时间点之后开始推
+}
+
+// 一根算好的分钟 K 线，价格单位是「分」。
+message Bar
+{
+    uint32 symbol_id = 1;
+    uint64 window_start_ns = 2;                                    // 这一分钟的起点，对齐到整分钟
+    int64 open = 3;
+    int64 high = 4;
+    int64 low = 5;
+    int64 close = 6;
+    uint64 volume = 7;
+    uint64 amount = 8;
+}
+
+// 服务端发给客户端的一帧。
+message FeedFrame
+{
+    enum FrameType
+    {
+        UNKNOWN = 0;
+        BARS = 1;
+    }
+
+    FrameType type = 1;
+    repeated Bar bars = 2;                                         // 一次推一批
+}

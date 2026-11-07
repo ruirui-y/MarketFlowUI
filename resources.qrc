@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/">
+        <file>qml/main.qml</file>
+        <file>qml/theme/Theme.qml</file>
+        <file>qml/theme/qmldir</file>
+        <file>qml/components/KLineChart.qml</file>
+    </qresource>
+</RCC>

@@ -1,0 +1,20 @@
+{
+    "version": "0.2.1",
+    "defaults": {},
+    "configurations": [
+        {
+            "type": "default",
+            "project": "CMakeLists.txt",
+            "projectTarget": "marketflow_ui.exe",
+            "name": "marketflow_ui.exe  --demo（假数据预览）",
+            "args": [ "--demo" ]
+        },
+        {
+            "type": "default",
+            "project": "CMakeLists.txt",
+            "projectTarget": "marketflow_ui.exe",
+            "name": "marketflow_ui.exe（连服务端）",
+            "args": []
+        }
+    ]
+}
