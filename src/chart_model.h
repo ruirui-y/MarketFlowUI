@@ -38,6 +38,7 @@ signals:
 public slots:
     void AppendBars(const QVector<BarRow>& bars);                  // 追加一批，界面跟着长
     void SetBars(const QVector<BarRow>& bars);                     // 换一整套，比如切标的
+    void Clear();                                                 // 清空，切股票之前调
 
 private:
     QVector<BarRow> bars_;

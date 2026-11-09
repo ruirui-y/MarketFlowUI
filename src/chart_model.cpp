@@ -97,3 +97,12 @@ void ChartModel::SetBars(const QVector<BarRow>& bars)
     endResetModel();
     emit CountChanged();
 }
+
+// 清空。切股票之前调，不然新旧两根会拼在一起。
+void ChartModel::Clear()
+{
+    beginResetModel();
+    bars_.clear();
+    endResetModel();
+    emit CountChanged();
+}

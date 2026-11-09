@@ -3,6 +3,7 @@ add_executable(marketflow_ui
     main.cpp
     chart_model.cpp
     feed_client.cpp
+    log.cpp
     ${PROJECT_SOURCE_DIR}/resources.qrc
 )
 target_include_directories(marketflow_ui PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})

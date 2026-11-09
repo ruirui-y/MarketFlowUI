@@ -150,7 +150,7 @@ Item
     Connections
     {
         target: chartModel
-        onCountChanged: canvas.requestPaint()
+        function onCountChanged() { canvas.requestPaint() }
     }
 
     onWidthChanged: canvas.requestPaint()

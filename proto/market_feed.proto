@@ -2,14 +2,35 @@ syntax = "proto3";
 
 package marketflow.feed;
 
-// 线上格式：4 字节大端长度 + 后面这段 protobuf 的字节数。
-// 长度字段本身不算在这 4 字节里。
+// 改这个文件必须同步改另一个仓库的 proto/market_feed.proto，两边不一致就联调不通。
+//
+// 线上格式：
+//
+// +------------------+----------------------------------+
+// | 长度 4 字节 大端  | protobuf 载荷 N 字节              |
+// +------------------+----------------------------------+
+//
+// 长度字段表示「载荷有多少字节」，不包含它自己那 4 字节。
 
-// 客户端发给服务端：要订阅哪些标的。
+// 订阅哪些标的。
 message SubscribeRequest
 {
     repeated uint32 symbol_ids = 1;                                // 空表示订阅全部
     uint64 from_ts_ns = 2;                                         // 从这个时间点之后开始推
+}
+
+// 客户端发给服务端的一帧。
+message ClientFrame
+{
+    enum FrameType
+    {
+        UNKNOWN = 0;
+        SUBSCRIBE = 1;                                             // 带 SubscribeRequest
+        SYMBOL_LIST = 2;                                           // 只要股票列表，不带参数
+    }
+
+    FrameType type = 1;
+    SubscribeRequest subscribe = 2;
 }
 
 // 一根算好的分钟 K 线，价格单位是「分」。
@@ -31,9 +52,11 @@ message FeedFrame
     enum FrameType
     {
         UNKNOWN = 0;
-        BARS = 1;
+        BARS = 1;                                                  // 带 bars
+        SYMBOLS = 2;                                               // 带 symbol_ids，告诉客户端有哪些股票
     }
 
     FrameType type = 1;
-    repeated Bar bars = 2;                                         // 一次推一批
+    repeated Bar bars = 2;
+    repeated uint32 symbol_ids = 3;
 }

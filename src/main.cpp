@@ -1,5 +1,6 @@
 #include "chart_model.h"
 #include "feed_client.h"
+#include "log.h"
 
 #include <QCommandLineParser>
 #include <QFont>
@@ -59,6 +60,12 @@ int main(int argc, char** argv)
     app.setFont(QFont(QStringLiteral("Microsoft YaHei UI"), 10));
 
 
+    // 日志先起来，后面每一步都能留痕。
+    const QString log_dir = marketflowui::log::Init();
+    qInfo().noquote() << QStringLiteral("======== MarketFlowUI 启动 ========");
+    qInfo().noquote() << QStringLiteral("Qt 版本: %1").arg(QStringLiteral(QT_VERSION_STR));
+    qInfo().noquote() << QStringLiteral("日志目录: %1").arg(log_dir);
+
     QCommandLineParser parser;
     parser.setApplicationDescription(QStringLiteral("MarketFlow 行情终端"));
     parser.addHelpOption();
@@ -70,6 +77,7 @@ int main(int argc, char** argv)
     FeedClient feed_client;
 
     QObject::connect(&feed_client, &FeedClient::BarsReceived, &chart_model, &ChartModel::AppendBars);
+    QObject::connect(&feed_client, &FeedClient::ChartReset, &chart_model, &ChartModel::Clear);
 
     if (parser.isSet(demo_option))
     {

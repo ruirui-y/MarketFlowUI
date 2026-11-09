@@ -54,7 +54,7 @@ ApplicationWindow
             TextField
             {
                 id: host_field
-                text: "127.0.0.1"
+                text: "192.168.184.128"
                 Layout.preferredWidth: 180                                                      // 在 RowLayout 里希望占多宽
                 placeholderText: qsTr("服务端地址")                                              // 没输入内容时显示的灰字
                 color: Theme.textPrimary
@@ -110,6 +110,66 @@ ApplicationWindow
                     color: parent.hovered ? Theme.panelHover : Theme.bg                         // 鼠标悬停时提亮
                     radius: Theme.radius
                     border.color: Theme.border
+                }
+            }
+
+            Rectangle { width: 1; height: 20; color: Theme.border }
+
+            // 股票下拉框：列出服务端有哪些股票，选中就只拉那一只。
+            ComboBox
+            {
+                id: symbol_box
+                Layout.preferredWidth: 130
+                enabled: feedClient.symbolIds.length > 0
+                model: feedClient.symbolIds
+
+                onActivated: feedClient.SubscribeSymbol(feedClient.symbolIds[index])
+
+                contentItem: Text
+                {
+                    leftPadding: 8
+                    text: qsTr("股票 ") + symbol_box.displayText
+                    color: Theme.textPrimary
+                    font.pixelSize: Theme.fontSmall
+                    verticalAlignment: Text.AlignVCenter
+                }
+
+                background: Rectangle
+                {
+                    color: Theme.bg
+                    radius: Theme.radius
+                    border.color: Theme.border
+                }
+
+                indicator: Text
+                {
+                    x: symbol_box.width - width - 8
+                    y: symbol_box.topPadding + (symbol_box.availableHeight - height) / 2
+                    text: "▾"
+                    color: Theme.textSecondary
+                    font.pixelSize: Theme.fontSmall
+                }
+
+                popup: Popup
+                {
+                    y: symbol_box.height
+                    width: symbol_box.width
+                    padding: 1
+
+                    contentItem: ListView
+                    {
+                        clip: true
+                        implicitHeight: contentHeight
+                        model: symbol_box.popup.visible ? symbol_box.delegateModel : null
+                        currentIndex: symbol_box.highlightedIndex
+                    }
+
+                    background: Rectangle
+                    {
+                        color: Theme.panel
+                        radius: Theme.radius
+                        border.color: Theme.border
+                    }
                 }
             }
 
